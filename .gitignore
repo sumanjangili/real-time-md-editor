@@ -1,14 +1,27 @@
 # macOS
 .DS_Store
+Thumbs.db
+*.log
 
 # Rust
 /target/
-/Cargo.lock
+backend/target/
+**/*.rs.bk  
+# /Cargo.lock
 
 # Node
+frontend/node_modules
 node_modules/
 dist/
-.vscode/
+npm-debug.log*
+yarn-error.log
 
 # Docker
+*.tar
+*.img
 *.log
+
+# Misc
+.idea/
+.vscode/
+*.pem
