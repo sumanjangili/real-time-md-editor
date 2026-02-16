@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Rust
+/target/
+/Cargo.lock
+
+# Node
+node_modules/
+dist/
+.vscode/
+
+# Docker
+*.log
