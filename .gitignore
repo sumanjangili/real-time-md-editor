@@ -1,7 +1,6 @@
 # macOS
 .DS_Store
 Thumbs.db
-*.log
 
 # Rust
 /target/
@@ -10,18 +9,37 @@ backend/target/
 # /Cargo.lock
 
 # Node
-frontend/node_modules
+frontend/node_modules/
 node_modules/
+
+# Build artefacts
 dist/
+build/
+*.local
+
+# Log files
+*.log
 npm-debug.log*
-yarn-error.log
+yarn-debug.log*
+yarn-error.log*
+
+# Vite cache / temporary files
+.vite/
+.cache/
 
 # Docker
 *.tar
 *.img
 *.log
 
-# Misc
+# IDE / editor artefacts
 .idea/
 .vscode/
+*.sublime-workspace
+*.sublime-project
 *.pem
+
+# Environment files
+.env
+.env.local
+.env.*.local
