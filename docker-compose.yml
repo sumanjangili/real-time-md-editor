@@ -3,25 +3,28 @@ version: "3.9"
 services:
   db:
     image: postgres:16-alpine
+    env_file:
+      - ./.env
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: md_editor
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   backend:
-    build:
+    build: 
       context: .
       dockerfile: backend/Dockerfile
     env_file:
-      - backend/.env
+      - ./.env
+      - ./backend/.env
     depends_on:
       - db
     ports:
-      - "8080:8080"
+      - "${BACKEND_PORT:-8080}:8080"
 
   frontend:
     build:
