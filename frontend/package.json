@@ -1,7 +1,9 @@
 {
-  "name": "frontend",
+  "name": "real_time_md_editor_ui",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "author": "Suman Jangili",
+  "description": "Hosts a React + Vite frontend with a live markdown editor.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -33,5 +35,9 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.48.0",
     "vite": "^7.3.1"
+  },
+   "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sumanjangili/real-time-md-editor.git"
   }
 }
