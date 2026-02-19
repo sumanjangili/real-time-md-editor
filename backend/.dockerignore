@@ -1,0 +1,37 @@
+# Node / JavaScript stuff
+node_modules/
+npm-debug.log
+yarn.lock
+.pnpm-store/
+dist/
+build/
+
+# Git metadata
+.git
+.gitignore
+.gitmodules
+
+# OS / editor artefacts
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+.secret*
+*.pem
+*.key
+
+# Docker artefacts
+Dockerfile*
+docker-compose.yml
+.dockerignore
+
+# Miscellaneous large files you don’t need in the image
+*.zip
+*.tar.gz
+*.tgz
+*.bak
