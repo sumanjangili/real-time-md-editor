@@ -1829,7 +1829,6 @@ version = "0.1.0"
 dependencies = [
  "actix-cors",
  "actix-web",
- "base64ct",
  "dotenvy",
  "env_logger",
  "jsonwebtoken",

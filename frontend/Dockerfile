@@ -1,24 +1,39 @@
-# ---------- Builder ----------
+# -------------------------------------------------
+#  Builder stage – compile the React/TS app
+# -------------------------------------------------
 FROM node:20-bullseye-slim AS builder
 
+# Set a deterministic working directory
 WORKDIR /app
 
-# Install dependencies (cached)
+# --------- Install npm dependencies (cached) ----------
+# Copy only the lockfiles first so Docker can cache this layer
 COPY package.json package-lock.json ./
-RUN npm ci
 
-# Copy source and build the static bundle
+# Install exactly the versions locked in package‑lock.json
+RUN npm ci --prefer-offline --no-audit --progress=false
+
+# --------- Copy source code & build the static bundle ----------
+# Now copy the rest of the source (everything else)
 COPY . .
-RUN npm run build   # expected output: ./dist/
 
-# ---------- Runtime ----------
-# Serve the built assets with a tiny nginx image
+# Build the production bundle – the result will be in ./dist/
+RUN npm run build
+
+# -------------------------------------------------
+#  Runtime stage – serve the static files with nginx
+# -------------------------------------------------
 FROM nginx:stable-alpine AS runtime
 
-# Copy the built assets into nginx’s default html directory
+# nginx runs as the non‑root user `nginx` by default;
+# we keep that default behaviour (no extra USER line needed).
+
+# Copy the compiled assets from the builder into nginx’s html dir
 COPY --from=builder /app/dist/ /usr/share/nginx/html/
 
-# Expose the HTTP port
+# Expose the default HTTP port
 EXPOSE 80
 
-# No CMD needed – the nginx base image already runs in the foreground.
+# The official nginx image already defines:
+#   CMD ["nginx", "-g", "daemon off;"]
+# so we don’t need to add a CMD ourselves.

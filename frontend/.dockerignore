@@ -1,4 +1,5 @@
 # ---- Node / JS artefacts (frontend) ----
+node_modules
 frontend/node_modules/
 frontend/dist/
 frontend/build/
@@ -15,9 +16,22 @@ backend/.cargo/          # cargo caches – safe to ignore
 .gitignore
 .gitmodules
 .DS_Store
+.vscode
+.idea
 Thumbs.db
 *.swp
 *.swo
+*.sublime-workspace
+*.sublime-project
+
+# Build artefacts that are not needed for the Docker build
+dist
+coverage
+*.log
+*.tmp
+.DS_Store
+.git
+.gitignore
 
 # ---- Secrets / env files (never copy into images) ----
 .env
