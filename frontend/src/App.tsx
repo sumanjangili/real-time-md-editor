@@ -11,13 +11,13 @@ function App() {
   return (
     <div className="App">
       {/* Existing Vite + React demo */}
-      <h1>Vite + React</h1>
+      <h1>Real‑Time Collaborative Markdown Editor</h1>
 
       <div className="card">
         <button onClick={() => setCount((c) => c + 1)}>
           count is {count}
         </button>
-        <p>Edit <code>src/App.tsx</code> and save to test HMR.</p>
+        <p>A lightweight way to co‑author documents without the overhead of heavyweight office suites.</p>
         <p>
           <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
             <img src={viteLogo} className="logo" alt="Vite logo" />

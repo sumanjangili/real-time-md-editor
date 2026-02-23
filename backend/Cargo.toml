@@ -2,11 +2,12 @@
 name = "real_time_md_editor_api"
 version = "0.1.0"
 authors = ["Suman Jangili"]
-edition = "2024"
+edition = "2021"
 description = "Serves a Rust Actix‑Web backend to Implement the WebSocket sync logic,oauth2 and jsonwebtoken crates, DB."
 repository = "https://github.com/sumanjangili/real-time-md-editor"
 
 [dependencies]
+base64ct = "1.7"
 actix-web = "4.5"
 actix-cors = "0.7"
 tokio = { version = "1.38", features = ["full"] }

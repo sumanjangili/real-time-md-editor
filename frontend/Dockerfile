@@ -1,12 +1,24 @@
 # ---------- Builder ----------
-FROM node:20-alpine AS builder
+FROM node:20-bullseye-slim AS builder
+
 WORKDIR /app
-COPY frontend/package.json frontend/package-lock.json ./
+
+# Install dependencies (cached)
+COPY package.json package-lock.json ./
 RUN npm ci
-COPY frontend/. .
-RUN npm run build   # creates dist/
+
+# Copy source and build the static bundle
+COPY . .
+RUN npm run build   # expected output: ./dist/
 
 # ---------- Runtime ----------
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Serve the built assets with a tiny nginx image
+FROM nginx:stable-alpine AS runtime
+
+# Copy the built assets into nginx’s default html directory
+COPY --from=builder /app/dist/ /usr/share/nginx/html/
+
+# Expose the HTTP port
 EXPOSE 80
+
+# No CMD needed – the nginx base image already runs in the foreground.

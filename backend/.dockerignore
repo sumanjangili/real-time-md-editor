@@ -1,37 +1,32 @@
-# Node / JavaScript stuff
-node_modules/
+# ---- Node / JS artefacts (frontend) ----
+frontend/node_modules/
+frontend/dist/
+frontend/build/
 npm-debug.log
 yarn.lock
 .pnpm-store/
-dist/
-build/
 
-# Git metadata
+# ---- Rust artefacts (backend) ----
+backend/target/          # compiled binaries – safe to ignore
+backend/.cargo/          # cargo caches – safe to ignore
+
+# ---- Generic ----
 .git
 .gitignore
 .gitmodules
-
-# OS / editor artefacts
 .DS_Store
 Thumbs.db
 *.swp
 *.swo
 
-# Environment / secrets
+# ---- Secrets / env files (never copy into images) ----
 .env
-.env.local
-.env.*.local
+*.env.*
 .secret*
 *.pem
 *.key
 
-# Docker artefacts
+# ---- Docker artefacts (not needed in the image) ----
 Dockerfile*
 docker-compose.yml
 .dockerignore
-
-# Miscellaneous large files you don’t need in the image
-*.zip
-*.tar.gz
-*.tgz
-*.bak
