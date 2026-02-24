@@ -1,55 +1,41 @@
 # -------------------------------------------------
-#  Builder stage – Nightly Rust (edition 2024 ready)
+# Builder stage – Alpine + Rust nightly (musl target)
 # -------------------------------------------------
-FROM rustlang/rust:nightly-slim AS builder   
-
+FROM rustlang/rust:nightly-alpine AS builder
 WORKDIR /app
 
-# -------------------------------------------------
-# Install native build‑time dependencies
-# -------------------------------------------------
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        musl-tools \
-        libssl-dev \
-        protobuf-compiler \
-        pkg-config && \
-    rm -rf /var/lib/apt/lists/*
+# Install build‑time deps (musl, OpenSSL, pkg-config)
+RUN apk add --no-cache musl-dev openssl-dev pkgconfig
 
-# -------------------------------------------------
-# Cache Cargo metadata (Cargo.toml + Cargo.lock)
-# -------------------------------------------------
+# Ensure the musl target is present (usually already the default)
+RUN rustup target add x86_64-unknown-linux-musl
+
+# Cache Cargo metadata
 COPY Cargo.toml Cargo.lock ./
+RUN mkdir -p src && echo "fn main() {}" > src/main.rs && cargo fetch && rm -rf src
 
-# Dummy source file – needed so `cargo fetch` works before we copy the real code
-RUN mkdir -p src && \
-    echo "fn main() {}" > src/main.rs && \
-    cargo fetch
-
-# -------------------------------------------------
-# Copy the actual source code and build the release binary
-# -------------------------------------------------
+# Copy source and build
 COPY . .
-
-# Build the release binary (replace `backend` with your binary name if different)
-RUN cargo build --release && \
-    rm -rf src   # clean up the dummy src directory
+# Replace YOUR_BINARY_NAME with the actual binary name
+RUN cargo build --release --target x86_64-unknown-linux-musl && \
+    strip target/x86_64-unknown-linux-musl/release/real_time_md_editor_api
 
 # -------------------------------------------------
 # Runtime stage – tiny Alpine image
 # -------------------------------------------------
 FROM alpine:3.20 AS runtime
-
 WORKDIR /app
-
-# Minimal runtime packages (certificates & timezone data)
 RUN apk add --no-cache ca-certificates tzdata
 
-# Copy the compiled binary from the builder stage.
-COPY --from=builder /app/target/release/backend ./backend
+# Copy the built binary (rename to ./backend if you like)
+COPY --from=builder \
+    /app/target/x86_64-unknown-linux-musl/release/real_time_md_editor_api \
+    ./backend
 
-# Expose the port your Actix‑Web server listens on (adjust if needed)
+# Run as non‑root
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
 EXPOSE 8080
-
-# Entrypoint – run the binary
+HEALTHCHECK CMD wget --quiet --spider http://localhost:8080/api/ping || exit 1
 CMD ["./backend"]
