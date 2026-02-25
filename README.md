@@ -5,9 +5,10 @@
 Built with Rust (high‑performance backend) and React + Vite (fast, modern UI).
 > "
 
+[![Sponsor](https://img.shields.io/badge/Sponsor-💖-orange)](https://github.com/sponsors/sumanjangili)
+
 > "
 > ** Why sponsor?**
-[![Sponsor](https://img.shields.io/badge/Sponsor-💖-orange)](https://github.com/sponsors/sumanjangili)
 Privacy‑first tooling is increasingly demanded by regulated industries (finance, healthcare). Your support helps us keep the core free while delivering enterprise‑grade extensions.
 Sponsors gain visibility among a technically savvy audience that values open‑source, security, and performance.
 > "
