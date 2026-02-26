@@ -1,5 +1,5 @@
 {
-  "name": "real_time_md_editor_ui",
+  "name": "@sumanjangili/real_time_md_editor_ui",
   "private": true,
   "version": "0.1.0",
   "author": "Suman Jangili",
@@ -50,5 +50,18 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sumanjangili/real-time-md-editor.git"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/sumanjangili/real-time-md-editor/issues"
+  },
+  "homepage": "https://github.com/sumanjangili/real-time-md-editor#readme",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "license": "MIT"
 }

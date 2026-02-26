@@ -7,7 +7,7 @@ Built with Rust (high‑performance backend) and React + Vite (fast, modern 
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-💖-orange)](https://github.com/sponsors/sumanjangili)
 > "
->  Why sponsor?
+>  Why sponsor? 
 Privacy‑first tooling is increasingly demanded by regulated industries (finance, healthcare). Your support helps us keep the core free while delivering enterprise‑grade extensions.
 Sponsors gain visibility among a technically savvy audience that values open‑source, security, and performance.
 > "
@@ -21,7 +21,7 @@ Sponsors gain visibility among a technically savvy audience that values open‑s
 ### Table of Contents
 
 - [Why It Solves a Real Pain Point](#why-it-solves-a-real-pain-point)
-- [Core Features](#core-features)
+- [Core Features (MVP)](#core-features-mvp)
 - [Tech Stack & Architecture](#tech-stack--architecture)
 - [One‑Click Deploy (Docker Compose)](#one‑click-deploy-docker-compose)
 - [Development Workflow](#development-workflow)
@@ -43,7 +43,7 @@ Sponsors gain visibility among a technically savvy audience that values open‑s
 
 ---
 
-### Core Features
+### Core Features (MVP)
 
 | Feature | Description | Value Delivered |
 | ------- | ----------- | --------------- |
@@ -76,44 +76,46 @@ Sponsors gain visibility among a technically savvy audience that values open‑s
 
 ### One‑Click Deploy (Docker Compose)
 The repository ships with a ready‑to‑use docker-compose.yml.
-Running the stack takes under a minute on any machine with Docker installed.
-1 **Start the stack**
-```bash
-docker compose up -d
-```
-Docker Compose will:
 
+Running the stack takes under a minute on any machine with Docker installed.
+
+#### 1. Start the stack
+     ```bash
+       docker compose up -d
+     ```
+**Docker Compose will:**
 - Pull/build the three images (real-time-md-editor-backend, real-time-md-editor-frontend, postgres:15-alpine).
 - Start containers in detached mode.
 - Run a health‑check on the backend (/api/ping).
 
-2 **SVerify the deployment**
-```bash
-# Backend health‑check – should output "pong"
-curl -s http://localhost:8080/api/ping
-# → pong
-```
-Open the UI:
-```bash
-# macOS
-open http://localhost:3000
-# Linux
-xdg-open http://localhost:3000
-# Or just paste the URL into any browser.
-```
+#### 2. Verify the deployment
+     ```bash
+       # Backend health‑check – should output "pong"
+         curl -s http://localhost:8080/api/ping 
+       # → pong
+     ```
+**Open the UI:**
+  ```bash
+    # macOS
+    open http://localhost:3000
+    # Linux
+    xdg-open http://localhost:3000  
+    # Or just paste the URL into any browser.
+  ```
 You should see the Markdown editor loading.
 
-In‑container connectivity test
-```bash
-docker compose exec frontend sh -c "wget -qO- http://backend:8080/api/ping"
-# → pong
-```
+**In‑container connectivity test**
+  ```bash
+    docker compose exec frontend sh -c "wget -qO- http://backend:8080/api/ping"  
+    # → pong
+  ```
 If you see pong, the internal Docker network is functioning correctly.
-3. Stop / clean up
-```bash
-docker compose down --volumes   # removes containers, network, and the Postgres volume
-```
-(Remove --volumes if you want to keep the database.)
+
+#### 3. Stop / clean up
+     ```bash
+       docker compose down --volumes   # removes containers, network, and the Postgres volume
+     ```
+     (Remove --volumes if you want to keep the database.)
 
 ---
 
@@ -166,8 +168,8 @@ The **Real‑Time Collaborative Markdown Editor** is released under the **MIT Li
 #### Thank you!
 If you find this project useful, please ⭐ the repository, spread the word, and consider supporting us through sponsorship. Together we can keep collaborative writing fast, private, and affordable for everyone.
 
-Repository: https://github.com/sumanjangili/real‑time‑md‑editor
-Support / Issues: https://github.com/sumanjangili/real‑time‑md‑editor/issues
+- Repository: [https://github.com/sumanjangili/real‑time‑md‑editor](https://github.com/sumanjangili/real‑time‑md‑editor)
+- Support / Issues: [https://github.com/sumanjangili/real‑time‑md‑editor/issues](https://github.com/sumanjangili/real‑time‑md‑editor/issues)
 
 ---
 
