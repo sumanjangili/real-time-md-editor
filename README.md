@@ -139,7 +139,7 @@ Remove --volumes if you want to keep the database.
 | Milestones | Planned Features |
 | ------ | ------- |
 | **Post‑MVP (Month 2‑3)** | • Webhooks for CI/CD triggers • PDF export via Pandoc (server‑side) • Diagram rendering plugin (Mermaid) |
-| **RVersion 2 (Month 4‑6)** | • Real‑time cursor presence & user avatars • Full‑text search (PostgreSQL tsvector) • Multi‑tenant mode (multiple workspaces) |
+| **Version 2 (Month 4‑6)** | • Real‑time cursor presence & user avatars • Full‑text search (PostgreSQL tsvector) • Multi‑tenant mode (multiple workspaces) |
 | **Enterprise Tier** | • SSO (SAML/OIDC) • Auditing & compliance logs • Dedicated support SLA |
 | **Community Extensions** | • VS Code extension for live sync • Plugin marketplace for custom renderers (PlantUML, MathJax) |
 
