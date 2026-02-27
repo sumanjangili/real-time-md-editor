@@ -1,5 +1,5 @@
 // src/components/Editor.tsx
-import { useState, useMemo, ChangeEvent } from "react";
+import { useState, useMemo } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { markdown } from "@codemirror/lang-markdown";
 import DOMPurify from "dompurify";
