@@ -1,33 +1,29 @@
-// ──────────────────────────────────────────────────────────────────────────────
 //  Imports
-// ──────────────────────────────────────────────────────────────────────────────
+
 use actix_cors::Cors;
 use actix_web::{
-    get, middleware::Logger, web, App, Error, HttpRequest, HttpResponse,
-    HttpServer, Responder,
+    App, Error, HttpRequest, HttpResponse, HttpServer, Responder, get, middleware::Logger, web,
 };
-use actix_ws::{Message, Session};               // ← NEW import
+use actix_ws::{Message, Session}; // WebSocket session type
 use dotenvy::dotenv;
-use futures_util::StreamExt;                    // we only need StreamExt now
+use futures_util::StreamExt; // we only need StreamExt now
 use std::env;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
+use tokio::sync::Mutex; // ← async‑aware mutex
 
-// ──────────────────────────────────────────────────────────────────────────────
-//  1️⃣  Shared state – a thread‑safe list of client sessions
-// ──────────────────────────────────────────────────────────────────────────────
-type Clients = Arc<Mutex<Vec<Session>>>;          // store Session objects
+//  Shared state – a thread‑safe list of client sessions
 
-// ──────────────────────────────────────────────────────────────────────────────
-//  2️⃣  Simple health‑check endpoint (useful for probes)
-// ──────────────────────────────────────────────────────────────────────────────
+type Clients = Arc<Mutex<Vec<Session>>>; // store Session objects
+
+//  Simple health‑check endpoint (useful for probes)
+
 #[get("/api/ping")]
 async fn ping() -> impl Responder {
     HttpResponse::Ok().body("pong")
 }
 
-// ──────────────────────────────────────────────────────────────────────────────
-//  3️⃣  WebSocket handler – registers the client and broadcasts text messages
-// ──────────────────────────────────────────────────────────────────────────────
+//  WebSocket handler – registers the client and broadcasts text messages
+
 async fn ws_handler(
     req: HttpRequest,
     stream: web::Payload,
@@ -39,7 +35,7 @@ async fn ws_handler(
 
     // Store the newly‑created session so we can broadcast to it later.
     {
-        let mut lock = clients.lock().unwrap();
+        let mut lock = clients.lock().await; // async lock acquisition
         lock.push(session.clone());
     }
 
@@ -49,12 +45,11 @@ async fn ws_handler(
     while let Some(msg) = msg_stream.next().await {
         let msg = msg?;
 
-        // println!("🔁 Received a WebSocket frame: {:?}", msg);
         log::info!("Received a WebSocket frame: {:?}", msg);
 
         if let Message::Text(txt) = msg {
             // Broadcast the text to every stored session.
-            let mut lock = clients.lock().unwrap();
+            let mut lock = clients.lock().await; // async lock again
 
             // Iterate backwards so we can safely remove dead sockets.
             for i in (0..lock.len()).rev() {
@@ -78,9 +73,8 @@ async fn ws_handler(
     Ok(resp)
 }
 
-// ──────────────────────────────────────────────────────────────────────────────
-//  4️⃣  Server bootstrap
-// ──────────────────────────────────────────────────────────────────────────────
+// Server bootstrap
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     // Load .env variables (e.g., DATABASE_URL) and initialise logger
@@ -95,7 +89,7 @@ async fn main() -> std::io::Result<()> {
 
     println!("🚀 Starting backend on http://0.0.0.0:{port}");
 
-    // Create the globally‑shared client list
+    // Create the globally‑shared client list (async‑aware mutex)
     let clients: Clients = Arc::new(Mutex::new(Vec::new()));
 
     HttpServer::new(move || {
