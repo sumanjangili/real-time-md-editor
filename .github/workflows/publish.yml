@@ -1,0 +1,99 @@
+# .github/workflows/publish.yml
+name: Publish Crate to crates.io
+
+# ----------------------------------------------------------------------
+# When to run the workflow
+# ----------------------------------------------------------------------
+on:
+  # Trigger on a new **annotated** tag (e.g. v0.2.0) – safest way to ensure a
+  # version bump has already been committed.
+  push:
+    tags:
+      - 'v*'          # matches tags like v0.1.0, v1.2.3‑beta, etc.
+
+  # Optional: also allow manual dispatch from the Actions UI
+  workflow_dispatch:
+
+# ----------------------------------------------------------------------
+# Permissions – we only need read access to the repo and write access to
+# the `GITHUB_TOKEN` for status updates.
+# ----------------------------------------------------------------------
+permissions:
+  contents: read
+  id-token: write   # needed for OIDC token if you use it (not required here)
+
+# ----------------------------------------------------------------------
+# Jobs
+# ----------------------------------------------------------------------
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # --------------------------------------------------------------
+      # Checkout the repository (including tags)
+      # --------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # fetch all history + tags (needed for version)
+
+      # --------------------------------------------------------------
+      # Install the latest stable Rust toolchain
+      # --------------------------------------------------------------
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: cargo
+
+      # --------------------------------------------------------------
+      # Cache Cargo registry & build artefacts (speed up subsequent runs)
+      # --------------------------------------------------------------
+      - name: Cache Cargo registry
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      # --------------------------------------------------------------
+      # Verify that the crate can be built (optional but nice)
+      # --------------------------------------------------------------
+      - name: Cargo check
+        run: cargo check --locked
+
+      # --------------------------------------------------------------
+      # Log in to crates.io
+      # --------------------------------------------------------------
+      # You must store your crates.io API token as a **secret** named
+      # `CARGO_REGISTRY_TOKEN` in the repository settings.
+      - name: Set up crates.io authentication
+        run: |
+          echo "[registry]" > ~/.cargo/credentials
+          echo "token = \"$CARGO_REGISTRY_TOKEN\"" >> ~/.cargo/credentials
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      # --------------------------------------------------------------
+      # Publish the crate
+      # --------------------------------------------------------------
+      - name: Publish to crates.io
+        run: cargo publish --token "$CARGO_REGISTRY_TOKEN"
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      # --------------------------------------------------------------
+      # (Optional) Post a success comment on the tag commit
+      # --------------------------------------------------------------
+      - name: Add success comment (optional)
+        if: success()
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number || 0 }}
+          body: |
+            🎉 **Successfully published** `${{ github.repository }}` version `${{ github.ref_name }}` to crates.io.
