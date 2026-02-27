@@ -6,11 +6,10 @@ Built with Rust (high‑performance backend) and React + Vite (fast, modern 
 > "
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-💖-orange)](https://github.com/sponsors/sumanjangili)
-> "
 >  Why sponsor? 
-Privacy‑first tooling is increasingly demanded by regulated industries (finance, healthcare). Your support helps us keep the core free while delivering enterprise‑grade extensions.
-Sponsors gain visibility among a technically savvy audience that values open‑source, security, and performance.
-> "
+> - Privacy‑first tooling is increasingly demanded by regulated industries (finance, healthcare). 
+> - Your support helps us keep the core free while delivering enterprise‑grade extensions.
+> - Sponsors gain visibility among a technically savvy audience that values open‑source, security, and performance.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-1.78+-red.svg)](Rust)
@@ -19,15 +18,14 @@ Sponsors gain visibility among a technically savvy audience that values open‑s
 ---
 
 ### Table of Contents
-
-- [Why It Solves a Real Pain Point](#why-it-solves-a-real-pain-point)
-- [Core Features (MVP)](#core-features-mvp)
-- [Tech Stack & Architecture](#tech-stack--architecture)
-- [One‑Click Deploy (Docker Compose)](#one‑click‑deploy‑docker‑compose)
-- [Development Workflow](#development-workflow)
-- [Roadmap & Future Enhancements](#roadmap--future-enhancements)
-- [Contributing](#contributing)
-- [License](#license)
+1. [Why It Solves a Real Pain Point](#why-it-solves-a-real-pain-point)
+2. [Core Features (MVP)](#core-features-mvp)
+3. [Tech Stack & Architecture](#tech-stack--architecture)
+4. [One‑Click Deploy (Docker Compose)](#one‑click‑deploy‑docker‑compose)
+5. [Development Workflow](#development-workflow)
+6. [Roadmap & Future Enhancements](#roadmap--future-enhancements)
+7. [Contributing](#contributing)
+8. [License](#license)
 
 ---
 
