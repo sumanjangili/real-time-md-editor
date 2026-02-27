@@ -1,6 +1,6 @@
 {
   "name": "@sumanjangili/real_time_md_editor_ui",
-  "private": true,
+  "private": false,
   "version": "0.1.0",
   "author": "Suman Jangili",
   "description": "Hosts a React + Vite frontend with a live markdown editor.",
