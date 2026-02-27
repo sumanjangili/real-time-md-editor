@@ -23,7 +23,7 @@ Sponsors gain visibility among a technically savvy audience that values open‑s
 - [Why It Solves a Real Pain Point](#why-it-solves-a-real-pain-point)
 - [Core Features (MVP)](#core-features-mvp)
 - [Tech Stack & Architecture](#tech-stack--architecture)
-- [One‑Click Deploy (Docker Compose)](#one‑click-deploy-docker-compose)
+- [One‑Click Deploy (Docker Compose)](#one‑click‑deploy‑docker‑compose)
 - [Development Workflow](#development-workflow)
 - [Roadmap & Future Enhancements](#roadmap--future-enhancements)
 - [Contributing](#contributing)
@@ -74,26 +74,26 @@ Sponsors gain visibility among a technically savvy audience that values open‑s
 
 ---
 
-### One‑Click Deploy (Docker Compose)
+### One‑Click Deploy (Docker Compose)
 The repository ships with a ready‑to‑use docker-compose.yml.
 
 Running the stack takes under a minute on any machine with Docker installed.
 
 #### 1. Start the stack
-     ```bash
-       docker compose up -d
-     ```
+```bash
+     docker compose up -d
+```
 **Docker Compose will:**
 - Pull/build the three images (real-time-md-editor-backend, real-time-md-editor-frontend, postgres:15-alpine).
 - Start containers in detached mode.
 - Run a health‑check on the backend (/api/ping).
 
 #### 2. Verify the deployment
-     ```bash
-       # Backend health‑check – should output "pong"
+```bash
+     # Backend health‑check – should output "pong"
          curl -s http://localhost:8080/api/ping 
-       # → pong
-     ```
+     # → pong
+```
 **Open the UI:**
   ```bash
     # macOS
@@ -112,9 +112,9 @@ You should see the Markdown editor loading.
 If you see pong, the internal Docker network is functioning correctly.
 
 #### 3. Stop / clean up
-     ```bash
-       docker compose down --volumes   # removes containers, network, and the Postgres volume
-     ```
+```bash
+     docker compose down --volumes   # removes containers, network, and the Postgres volume
+```
      (Remove --volumes if you want to keep the database.)
 
 ---

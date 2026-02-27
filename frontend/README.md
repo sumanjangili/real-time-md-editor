@@ -1,73 +1,95 @@
-# React + TypeScript + Vite
+## Real‑Time Markdown Editor – Frontend
+**A lightweight way to co‑author documents without the overhead of heavyweight office suites.**
+> A lightweight React + Vite application that provides a live‑editing experience for Markdown documents.  
+The UI connects to the Rust backend via a WebSocket endpoint to synchronize edits in real time.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+### Table of Contents
+1. [Features](#features)  
+2. [Tech Stack](#tech-stack)  
+3. [Prerequisites](#prerequisites)  
+4. [Getting Started (local)](#getting-started-local)  
+5. [Running with Docker](#running-with-docker)  
+6. [License](#license)  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+### Features
+- **Live collaborative editing** – WebSocket‑driven sync across multiple users.  
+- **Markdown preview** – Side‑by‑side rendered view (GitHub‑flavoured).  
+- **OAuth2 login** – GitHub / Google (handled by the backend).  
+- **Responsive UI** – Tailwind CSS + utility‑first styling.  
+- **Production‑ready build** – Optimised static bundle served by Nginx.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+### Tech Stack
+| Layer | Technology | Why |
+|-------|------------|-----|
+| Framework | **React** (Vite + TypeScript) | Fast dev server, modern ES modules. |
+| Editor | **@uiw/react-codemirror** + **@codemirror/lang-markdown** | Powerful, extensible code editor with Markdown mode. |
+| Styling | **Tailwind CSS** | Utility‑first, minimal CSS footprint. |
+| Build | **Vite** | Lightning‑fast bundler for ES‑M. |
+| Lint/Format | **ESLint**, **Prettier** (via ESLint config) | Consistent code style. |
+| Package Manager | **npm** | Standard for Node ecosystems. |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Prerequisites
+- **Node.js ≥ 20** (the Dockerfile uses `node:20-bullseye-slim`).  
+- **npm** (comes with Node).  
+- Optional: **Docker** & **docker‑compose** if you prefer containerised development.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Getting Started (local)
+
+```bash
+1. Clone the repo
+git clone https://github.com/sumanjangili/real-time-md-editor.git
+cd real-time-md-editor/frontend
+
+2. Install exact dependencies (uses the lockfile)
+npm ci   # fast, reproducible install
+
+3. Run the dev server
+npm run dev
+# → Vite starts at http://localhost:5173 (or the port shown in the console)
+
+Verify the connection
+- The UI expects the backend to be reachable at /api/ws (proxy can be set in vite.config.ts).
+- Start the backend (see backend/README) before trying collaborative features.
+
+4. Building for Production
+npm run build
+# Output ends up in ./dist/ – ready to be copied into the Nginx runtime image.
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Running with Docker
+The repository ships a multi‑stage Dockerfile that builds the frontend and bundles the static assets for the Nginx runtime.
+```bash
+1. From the repository root (where the Dockerfile lives)
+docker build -t real-time-md-editor-frontend --target runtime .
+# Or use docker-compose if you have a compose file that also brings up the backend.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Run the image (exposes port 80)
+docker run -p 80:80 real-time-md-editor-frontend
 ```
+The container serves the compiled files at http://localhost.
+
+---
+
+### License
+This frontend is released under the **MIT License** (see the top‑level LICENSE file).
+
+---
+
+### Contributing
+- Feel free to open pull requests, report bugs, or suggest enhancements via the GitHub Issues page.
+- For larger feature work, consider creating a feature branch and linking the PR to the corresponding issue.
+
+---
+
