@@ -43,7 +43,7 @@ function App() {
   // Establish the connection once when the component mounts.
   useEffect(() => {
     // -----------------------------------------------------------------------
-    //  1️⃣ Build the WS URL
+    //  1. Build the WS URL
     // -----------------------------------------------------------------------
     // Vite injects env vars prefixed with VITE_ at build time.
     // Example: VITE_WS_URL=ws://localhost:8080/ws
@@ -52,13 +52,13 @@ function App() {
       "ws://localhost:8080/ws";
 
     // -----------------------------------------------------------------------
-    //  2️⃣ Create the socket
+    //  2. Create the socket
     // -----------------------------------------------------------------------
     const socket = new WebSocket(wsUrl);
     wsRef.current.socket = socket;
 
     // -----------------------------------------------------------------------
-    //  3️⃣ Wire up event listeners
+    //  3. Wire up event listeners
     // -----------------------------------------------------------------------
     socket.addEventListener("open", () => {
       console.info("🔗 WebSocket connection opened →", wsUrl);
@@ -84,7 +84,7 @@ function App() {
     });
 
     // -----------------------------------------------------------------------
-    //  4️⃣ Cleanup on unmount
+    //  4. Cleanup on unmount
     // -----------------------------------------------------------------------
     return () => {
       console.info("🧹 Cleaning up WebSocket");
@@ -100,16 +100,15 @@ function App() {
     <div className="App">
       {/* Existing Vite + React demo */}
       <h1>Real‑Time Collaborative Markdown Editor</h1>
-
+        <p>
+          A lightweight way to co‑author documents without the overhead of
+          heavyweight office suites.
+        </p>    
+  
       <div className="card">
         <button onClick={() => setCount((c) => c + 1)}>
           count is {count}
         </button>
-
-        <p>
-          A lightweight way to co‑author documents without the overhead of
-          heavyweight office suites.
-        </p>
 
         <p>
           <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
@@ -128,6 +127,10 @@ function App() {
       {/* Custom editor component – we pass the `sendMessage` helper so it can
           broadcast changes to every connected peer. */}
       <Editor sendMessage={sendMessage} />
+      {/* Footer note */}
+      <footer className="text-xs text-gray-500">
+        Powered by <strong>Suman Jangili</strong> – A Full-Stack Engineer.
+      </footer>
     </div>
   );
 }
